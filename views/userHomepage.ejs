@@ -1,0 +1,21 @@
+<%- include('includes/header'); %>
+<h2>Streams</h2>
+<ul>
+    <% for(let key of keys) { %>
+        <li><span class="rtmpLink">rtmp://<%- hostname %>:1935/live/<%-key.streamName%>/?user=<%- key.username%>&shortid=<%- key.shortid%></span><button class="btn btn-info btn-sm copy-rtmp-button">Copy</button></li>
+    <% }%>
+</ul>
+<h2>Add stream:</h2>
+<form method="post" action="addStream" class="form-inline">
+    <div class="form-group row">
+        <label for="streamName" class="col-form-label col-sm-1">Stream name:</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="streamName" name="streamName"/>
+        </div>
+        <div class="col-sm-1">
+            <button type="submit" class="btn btn-primary mb-2">Add Stream</button>
+        </div>
+    </div>
+</form>
+
+<%- include('includes/footer'); %>
