@@ -53,7 +53,7 @@ router.get('/logout', function(req, res, next){
   });
 });
 
-router.get('/verifyStream', function(req, res, next){
+router.post('/verifyStream', function(req, res, next){
   Controller.verifyStream(req, res).catch((err)=>{
     console.log(err);
     next();
