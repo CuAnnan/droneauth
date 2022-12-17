@@ -2,7 +2,7 @@
 <h2>Streams</h2>
 <ul>
     <% for(let key of keys) { %>
-        <li><span class="rtmpLink">rtmp://<%- hostname %>:1935/live/<%-key.streamName%>/?user=<%- key.username%>&shortid=<%- key.shortid%></span><button class="btn btn-info btn-sm copy-rtmp-button">Copy</button></li>
+        <li><span class="rtmpLink">rtmp://<%- hostname %>:1935/live/<%-key.streamName%>?user=<%- key.username%>&shortid=<%- key.shortid%></span><button class="btn btn-info btn-sm copy-rtmp-button">Copy</button></li>
     <% }%>
 </ul>
 <h2>Add stream:</h2>
