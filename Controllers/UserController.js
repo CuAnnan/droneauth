@@ -43,7 +43,7 @@ class UserController extends Controller
     {
         let db = this.getDB(req, res);
         let qry = await db.collection('streamKeys').findOne({username:req.body.user, streamName:req.body.name, shortid:req.body.shortid});
-
+        console.log(req.body);
         if(qry)
         {
             console.log('Have verified stream');
