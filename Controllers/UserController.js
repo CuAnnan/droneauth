@@ -42,17 +42,18 @@ class UserController extends Controller
     static async verifyStream(req, res)
     {
         let db = this.getDB(req, res);
-        let qry = await db.collection('streamKeys').findOne({username:req.query.user, streamName:req.query.name, shortid:req.query.shortid});
+        let qry = await db.collection('streamKeys').findOne({username:req.body.user, streamName:req.body.name, shortid:req.body.shortid});
+
         if(qry)
         {
             console.log('Have verified stream');
-            res.status('200');
+            res.status(200);
             res.send('All good');
         }
         else
         {
             console.log('Failed stream verification process');
-            res.status('403');
+            res.status(403);
             res.send('You shall not pass');
         }
     }
