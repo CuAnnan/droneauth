@@ -36,7 +36,7 @@ class UserController extends Controller
         });
         console.log(keys);
         let hostname = req.hostname;
-        res.render('userHomepage', {title: 'User Homepage', keys:keys, hostname:hostname, scripts:['streamFormHandler.js']});
+        res.render('userHomepage', {title: 'User Homepage', keys:keys, hostname:hostname, scripts:['/js/streamFormHandler.js']});
     }
 
     static async verifyStream(req, res)
@@ -45,11 +45,13 @@ class UserController extends Controller
         let qry = await db.collection('streamKeys').findOne({username:req.query.user, streamName:req.query.name, shortid:req.query.shortid});
         if(qry)
         {
+            console.log('Have verified stream');
             res.status('200');
             res.send('All good');
         }
         else
         {
+            console.log('Failed stream verification process');
             res.status('403');
             res.send('You shall not pass');
         }
