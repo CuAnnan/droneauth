@@ -33,15 +33,21 @@ class StreamController extends Controller
         let db = this.getDB(req, res);
         console.log(req.body);
         let qry = await db.collection('streamKeys').findOne({username:req.body.user, streamName:req.body.name, shortid:req.body.shortid});
-        if(qry)
-        {
-            if(req.body.name === req.app.locals.STREAMNAME)
-            {
+        if(qry) {
+            if (req.body.name === req.app.locals.STREAMNAME) {
                 req.app.locals.streaming = false;
                 res.send('Done')
             }
+            else
+            {
+                res.send('Non primary stream');
+            }
         }
-        res.send('Failed');
+        else
+        {
+            res.send('Failed to find stream');
+        }
+
     }
 
     static async addStream(req, res)
