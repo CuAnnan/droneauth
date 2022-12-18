@@ -38,8 +38,10 @@ class StreamController extends Controller
             if(req.body.name === req.app.locals.STREAMNAME)
             {
                 req.app.locals.streaming = false;
+                res.send('Done')
             }
         }
+        res.send('Failed');
     }
 
     static async addStream(req, res)
