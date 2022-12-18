@@ -31,6 +31,7 @@ class StreamController extends Controller
     static async endStream(req, res)
     {
         let db = this.getDB(req, res);
+        console.log(req.body);
         let qry = await db.collection('streamKeys').findOne({username:req.body.user, streamName:req.body.name, shortid:req.body.shortid});
         if(qry)
         {
