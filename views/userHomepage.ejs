@@ -1,12 +1,17 @@
 <%- include('includes/header'); %>
 <h2>Streams</h2>
-<ul>
+<div class="container-sm">
     <% for(let key of keys) { %>
-        <li><span class="rtmpLink">rtmp://<%- hostname %>:1935/live/<%-key.streamName%>?user=<%- key.username%>&shortid=<%- key.shortid%></span><button class="btn btn-info btn-sm copy-rtmp-button">Copy</button></li>
+        <div class="row" id="stream-row-<%- key.shortid %>>" data-stream-name="<%- key.streamName %>" data-shortid="<%- key.shortid %>">
+            <div class="col"><span class="rtmpLink">rtmp://<%- hostname %>:1935/live/<%- key.streamName %>?user=<%- key.username %>&shortid=<%- key.shortid %></span></div>
+            <div class="col-1"><button class="btn btn-info btn-sm copy-rtmp-button">Copy</button></div>
+            <div class="col-1"><button class="btn btn-danger btn-sm delete-rtmp-button">Delete</button></div>
+        </div>
     <% }%>
-</ul>
+</div>
+
 <h2>Add stream:</h2>
-<form method="post" action="addStream" class="form-inline">
+<form method="post" action="/streams/" class="form-inline">
     <div class="form-group row">
         <label for="streamName" class="col-form-label col-sm-1">Stream name:</label>
         <div class="col-sm-2">

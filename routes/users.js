@@ -25,14 +25,6 @@ router.post('/doLogin', function(req, res, next){
   })
 });
 
-router.post('/addStream', function(req, res, next){
-  Controller.addUserStream(req,res).then(()=>{
-    res.redirect('/users/home');
-  }).catch((err)=> {
-    console.log(err);
-    next();
-  });
-});
 
 router.get('/home', function(req, res, next){
   if(req.session.user) {
@@ -53,11 +45,5 @@ router.get('/logout', function(req, res, next){
   });
 });
 
-router.post('/verifyStream', function(req, res, next){
-  Controller.verifyStream(req, res).catch((err)=>{
-    console.log(err);
-    next();
-  })
-});
 
 module.exports = router;

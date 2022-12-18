@@ -1,19 +1,21 @@
 <%- include('includes/header'); %>
 <div class="row">If there is a live stream, this is where you'll get to see it. I plan on including a list of prior streams at some point, but that will involve more work and increasing the amount of oomph I'm giving the cheapest of virtual machines that I have set aside for this project.</div>
 <div class="container">
-    <video
-            id="streamContainer"
-            class="video-js"
-            src="http://lyreen.so-4pt.net/"
-            controls
-            preload="auto"
-            width="640"
-            height="264"
-            poster="/imgs/drone.png"
-            data-setup="{}"
-    >
-        <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that<a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
-    </video>
+    <% if(streaming){%>
+        <video
+                id="streamContainer"
+                class="video-js"
+                controls
+                preload="auto"
+                width="640"
+                height="264"
+                data-setup="{}"
+        >
+            <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that<a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+        </video>
+    <%} else {%>
+        <span>There is no current live stream at present.</span>
+    <%}%>
 </div>
 
 <%- include('includes/footer'); %>
