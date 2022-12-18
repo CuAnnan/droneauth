@@ -28,6 +28,19 @@ class StreamController extends Controller
         }
     }
 
+    static async endStream(req, res)
+    {
+        let db = this.getDB(req, res);
+        let qry = await db.collection('streamKeys').findOne({username:req.body.user, streamName:req.body.name, shortid:req.body.shortid});
+        if(qry)
+        {
+            if(req.body.name === req.app.locals.STREAMNAME)
+            {
+                req.app.locals.streaming = false;
+            }
+        }
+    }
+
     static async addStream(req, res)
     {
         let db= this.getDB(req, res);

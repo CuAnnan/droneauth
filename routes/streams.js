@@ -16,6 +16,13 @@ router.post('/verifyStream', function(req, res, next){
     })
 });
 
+router.post('/endStream', function(req, res, next){
+    Controller.endStream(req, res).catch((err)=>{
+        console.log(err);
+        next();
+    })
+})
+
 router.post('/', function(req, res, next){
     Controller.addStream(req,res).then(()=>{
         res.redirect('/users/home');
