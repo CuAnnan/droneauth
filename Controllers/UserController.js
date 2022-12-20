@@ -6,8 +6,7 @@ class UserController extends Controller
 {
    static async logUserIn(req, res)
     {
-        let db = this.getDB(req, res);
-        let userByEmail = await db.collection('users').findOne({email:req.body.email});
+        let userByEmail = await this.db.collection('users').findOne({email:req.body.email});
         let result = await bcrypt.compare(req.body.password, userByEmail.passwordHash);
         if(result)
         {
@@ -19,15 +18,21 @@ class UserController extends Controller
 
     static async displayUserHome(req, res)
     {
-        let db= this.getDB(req, res);
         let user = req.session.user;
-        let qry = await db.collection('streamKeys').find({username: user.username});
-        let keys = [];
-        await qry.forEach(function(document){
-            keys.push(document);
+
+        let showQry = await this.db.collection('shows').find({username:user.username});
+        let shows = [];
+        await showQry.forEach(function(document){
+            shows.push(document);
+        });
+
+        let streamQry = await this.db.collection('streamKeys').find({username: user.username});
+        let streams = [];
+        await streamQry.forEach(function(document){
+            streams.push(document);
         });
         let hostname = req.hostname;
-        res.render('userHomepage', {title: 'User Homepage', keys:keys, hostname:hostname, scripts:['/js/streamFormHandler.js']});
+        res.render('userHomepage', {title: 'User Homepage', streams:streams, hostname:hostname, scripts:['/js/streamFormHandler.js']});
     }
 }
-module.exports = UserController
+module.exports = UserController;

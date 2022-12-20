@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var Controller = require('../Controllers/StreamController')
+const express = require('express');
+const router = express.Router();
+const Controller = require('../Controllers/StreamController');
 
 router.get('/', function(req, res, next){
     Controller.streamPageAction(req, res).catch(function(err){

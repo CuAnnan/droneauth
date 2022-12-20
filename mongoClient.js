@@ -16,7 +16,6 @@ module.exports = {
             try
             {
                 client.connect().then(()=>{
-                    console.log('Have successful mongo connection');
                     resolve(client);
                 });
             }

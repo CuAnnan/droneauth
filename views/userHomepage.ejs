@@ -1,9 +1,19 @@
 <%- include('includes/header'); %>
-<h2>Streams</h2>
+<h2>Shows</h2>
+
 <div class="container-sm">
-    <% for(let key of keys) { %>
-        <div class="row" id="stream-row-<%- key.shortid %>>" data-stream-name="<%- key.streamName %>" data-shortid="<%- key.shortid %>">
-            <div class="col"><span class="rtmpLink">rtmp://<%- hostname %>:1935/live/<%- key.streamName %>?user=<%- key.username %>&shortid=<%- key.shortid %></span></div>
+
+
+</div>
+
+
+
+<h2>Streams</h2>
+
+<div class="container-sm">
+    <% for(let stream of streams) { %>
+        <div class="row" id="stream-row-<%- stream.shortid %>>" data-stream-name="<%- stream.streamName %>" data-shortid="<%- stream.shortid %>">
+            <div class="col"><span class="rtmpLink">rtmp://<%- hostname %>:1935/live/<%- stream.streamName %>?user=<%- stream.username %>&shortid=<%- stream.shortid %></span></div>
             <div class="col-1"><button class="btn btn-info btn-sm copy-rtmp-button">Copy</button></div>
             <div class="col-1"><button class="btn btn-danger btn-sm delete-rtmp-button">Delete</button></div>
         </div>

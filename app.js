@@ -11,6 +11,7 @@ const conf = require('./conf');
 const indexRouter   = require('./routes/index');
 const usersRouter   = require('./routes/users');
 const streamsRouter = require('./routes/streams');
+const showsRouter   = require('./routes/shows.js');
 
 const app = express();
 

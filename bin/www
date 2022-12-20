@@ -40,14 +40,6 @@ if(conf.https)
   ).listen(443);
 }
 
-console.log("Trying to hoist db");
-let mongoClient = require('../mongoClient');
-mongoClient.connect().then((client)=>{
-  let db = client.db('lyreen');
-  app.locals.db=db;
-}).catch(err=>{console.log(err)});
-
-
 /**
  * Normalize a port into a number, string, or false.
  */

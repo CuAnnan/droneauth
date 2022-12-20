@@ -1,0 +1,37 @@
+<%- include('includes/header'); %>
+<div class="container" id="showContainer">
+    <% for (let show of shows){ %>
+        <div class="row" data-shortid="<%- show.shortid%>">
+            <div class="col"><%- show.name %></div>
+        </div>
+    <%}%>
+</div>
+<div class="container">
+    <h2>Add show</h2>
+    <form method="post" action="#" onsubmit="console.log('Submitting form for some reason'); return false;">
+        <div class="form-group row">
+            <label for="streamName" class="col-sm-2 col-form-label">Show Name</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="streamName" placeholder="Stream name"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-2">Add Stream</div>
+            <div class="col-sm-10">
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="newStreamMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Streams
+                    </a>
+                    <ul class="dropdown-menu"  aria-labelledby="newStreamMenuLink">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Separated link</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<%- include('includes/footer'); %>
