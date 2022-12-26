@@ -1,21 +1,26 @@
 const Controller = require('./Controller');
 const shortid = require('shortid');
+const Show = require('../Models/ShowModel');
 
 class ShowController extends Controller
 {
     static async defineShow(req, res)
     {
-        let user   = this.getUser(req);
-        let showId = shortid.generate();
-        await this.db.collection('shows').updateOne({showName:req.body.showName, username:user.username, streams:[]},{$set:{shortid:showId}},{upsert:true})();
-        res.json({shortid:showId});
+        let user   = req.session.user;
+        let qry = {
+            name:req.body.showName,
+            owner:user,
+            shortid:shortid.generate()
+        };
+        await Show.findOneAndUpdate({name:qry.name, username:qry.username}, qry, {upsert:true});
+        res.json({shortid:qry.shortid});
     }
 
     static async deleteShow(req, res)
     {
         let user = this.getUser(req);
-        await this.db.collection('shows').deleteOne({showName:req.body.showName, username:user.username, shortid:req.body.showId});
-        res.json({shortid:showId});
+        await Show.deleteOne({name:req.body.name, owner:user, shortid:req.body.shortid})
+        res.json({shortid:shortid});
     }
 
     static async showUserShows(req, res)

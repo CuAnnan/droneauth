@@ -1,5 +1,6 @@
 const Controller = require('./Controller');
 const shortid = require("shortid");
+const Stream = require('../Models/StreamModel');
 
 class StreamController extends Controller
 {
@@ -12,13 +13,12 @@ class StreamController extends Controller
      */
     static async verifyStream(req, res)
     {
-        let qry = await this.db.collection('streamKeys').findOne({username:req.body.user, streamName:req.body.name, shortid:req.body.shortid});
-        if(qry)
+        let stream = await Stream.findOne({'owner.displayname':req.body.user, streamName:req.body.name, shortid:req.body.shortid}).exec();
+
+        if(stream)
         {
-            if(req.body.name === req.app.locals.STREAMNAME)
-            {
-                req.app.locals.streaming = true;
-            }
+            stream.streaming = true;
+            stream.save();
             res.status(200);
             res.send('All good');
         }
@@ -37,16 +37,11 @@ class StreamController extends Controller
      */
     static async endStream(req, res)
     {
-        let qry = await this.db.collection('streamKeys').findOne({username:req.body.user, streamName:req.body.name, shortid:req.body.shortid});
+        let qry = await Stream.findOne({'owner.displayname':req.body.user, streamName:req.body.name, shortid:req.body.shortid});
         if(qry) {
-            if (req.body.name === req.app.locals.STREAMNAME) {
-                req.app.locals.streaming = false;
-                res.send('Done')
-            }
-            else
-            {
-                res.send('Non primary stream');
-            }
+            stream.streaming = false;
+            stream.save();
+            res.send('Done');
         }
         else
         {
@@ -55,20 +50,15 @@ class StreamController extends Controller
 
     }
 
-    static async getStreamsByUsername(username)
-    {
-        let qry = await this.db.collection('streamKeys').find({username: username});
-        let keys = [];
-        await qry.forEach(function(document){
-            keys.push(document);
-        });
-        return keys;
-    }
-
     static async addStream(req, res)
     {
         let user = req.session.user;
-        await this.db.collection('streamKeys').updateOne({streamName:req.body.streamName, username:user.username},{$set:{shortid:shortid.generate()}},{upsert:true});
+        let qry = {
+            owner:user,
+            shortid:shortid.generate(),
+            name:req.body.streamName
+        };
+        await Stream.findOneAndUpdate({owner:user, name:qry.name}, qry, {upsert:true});
         return true;
     }
 
@@ -81,10 +71,11 @@ class StreamController extends Controller
             res.json({'deleted':false, 'shortid':req.body.shortid});
             return;
         }
-
-        let db     = this.getDB(req);
-        let fields = {streamName:req.body.streamName, username:user.username, shortid:req.body.shortid};
-        let qry = await this.db.collection('streamKeys').deleteOne(fields);
+        let fields = {name:req.body.streamName, owner:user, shortid:req.body.shortid};
+        // console.log(fields);
+        // let stream = await Stream.findOne(fields).exec();
+        // console.log(stream);
+        await Stream.deleteOne(fields).exec();
         res.json({'deleted':true, 'shortid':req.body.shortid});
         return;
     }

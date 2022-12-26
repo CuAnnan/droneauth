@@ -1,12 +1,21 @@
-const mongoClient = require('../mongoClient');
+const {mongo} = require('../conf');
+const mongoose = require('mongoose');
+const connectString = `mongodb://${mongo.user}:${mongo.pass}@${mongo.host}`;
+
+mongoose.set('strictQuery', false);
+mongoose.connect(connectString,{dbName:'lyreen'}).then(function(){
+    console.log('Connection to mongodb established');
+}).catch(function(e){
+    console.log('Have error');
+    console.log(e);
+});
 
 class Controller
 {
-    /**
-     * @param req
-     * @returns {mongoClient} The MongoDB instance
-     * Get the mongo client from the app locals
-     */
+    static sync(mongooseObject)
+    {
+        return JSON.parse(JSON.stringify(mongooseObject));
+    }
 
     static getUser(req)
     {
@@ -18,12 +27,5 @@ class Controller
 
     }
 }
-
-mongoClient.connect().then((client) => {
-    Controller.db = client.db('lyreen');
-}).catch(err => {
-    console.log(err)
-});
-
 
 module.exports = Controller;
