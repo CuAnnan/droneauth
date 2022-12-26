@@ -1,0 +1,13 @@
+<%- include('includes/header'); %>
+    <h3><%- show.name%></h3>
+    <h4>Streams:</h4>
+    <% for (let stream of show.streams){%>
+        <div class="row">
+            <div class="col-2"><%- stream.name%></div>
+            <div class="col-1"><%- stream.streaming?'Live':''%></div>
+            <div class="col-1">
+                <button data-id-primary-stream="<%-stream._id%>" data-show-id="<%- show._id %>" class="btn-set-primary btn btn-primary"<%if(show.primaryStream && show.primaryStream._id.toString() === stream._id.toString()){%> disabled<%} %>>Set primary</button>
+            </div>
+        </div>
+    <%}%>
+<%- include('includes/footer'); %>

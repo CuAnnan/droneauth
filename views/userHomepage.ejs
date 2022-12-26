@@ -1,42 +1,44 @@
 <%- include('includes/header'); %>
 <h2>Shows</h2>
 
-<div class="container-sm">
-    <% for(let show of shows){%>
-        <div class="row show-row" id="show-row-<%- show.shortid %>" data-show-name="<%- show.showName%>" data-shortid="<%-show.shortid%>">
-            <div class="col">
-                <div class="row"><div class="col"><h3><%- show.showName%></h3></div></div>
-                <% for(let stream of show.streams){%>
-                    <div class="row show-stream"><div class="col"><%- stream.name%></div></div>
-                <%}%>
-            </div>
-        </div>
-    <%}%>
-</div>
+<ul>
+<% for(let show of shows){%>
+    <li><a href="/shows/<%-show.shortid%>"><%- show.name%></a></li>
+<%}%>
+</ul>
 
 <h2>Add Show:</h2>
-
-    <div class="form-group row">
-        <label for="streamName" class="col-form-label col-sm-1">Show name:</label>
-        <div class="col-sm-2">
-            <input type="text" class="form-control" id="streamName" name="streamName"/>
+    <form method="post" action="/shows">
+        <div class="form-group row">
+            <label for="showName" class="col-form-label col-sm-1">Show name:</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" id="showName" name="showName" required/>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm-1">Add Stream</div>
-        <div class="col-sm-2">
-            <div class="dropdown show">
-                <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Streams
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <% for(let stream of streams) { %>
-                        <a class="dropdown-item"><%- stream.name %></a>
-                    <% } %>
+        <div class="form-group row">
+            <div class="col-sm-1">Add Stream</div>
+            <div class="col-sm-2">
+                <div class="dropdown show">
+                    <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Streams
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <% for(let stream of streams) { %>
+                            <a data-stream-name="<%- stream.name %>" data-_id="<%- stream._id %>" data-shortid="<%- stream.shortid %>" class="dropdown-item show-stream"><%- stream.name %></a>
+                        <% } %>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div id="new-show-streams">
+
+        </div>
+        <div class="form-group row">
+            <div class="col">
+                <button class="btn btn-primary" type="submit">Add Show</button>
+            </div>
+        </div>
+    </form>
 
 
 <h2>Streams</h2>

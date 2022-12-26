@@ -4,44 +4,82 @@ const Show = require('../Models/ShowModel');
 
 class ShowController extends Controller
 {
-    static async defineShow(req, res)
-    {
-        let user   = req.session.user;
-        let qry = {
-            name:req.body.showName,
-            owner:user,
-            shortid:shortid.generate()
-        };
-        await Show.findOneAndUpdate({name:qry.name, username:qry.username}, qry, {upsert:true});
-        res.json({shortid:qry.shortid});
-    }
-
-    static async deleteShow(req, res)
-    {
-        let user = this.getUser(req);
-        await Show.deleteOne({name:req.body.name, owner:user, shortid:req.body.shortid})
-        res.json({shortid:shortid});
-    }
-
-    static async showUserShows(req, res)
-    {
-        let db =this.getDB();
-        let user = this.getUser(req);
-
-    }
-
     static async indexAction(req, res)
     {
         let user = req.session.user;
-        let qry = this.db.collection('shows').find({username:user.username});
-        let shows = [];
-        await qry.forEach(function(document){
-            shows.push(document);
-        });
-
-        res.render('shows', {title:'Shows', shows:shows});
+        if(!user)
+        {
+            res.redirect('/users/login');
+        }
+        else
+        {
+            let shows = await Show.find({owner:user}).populate('streams').exec();
+            res.render('showHomePage', {shows:shows, title:'Shows'});
+        }
     }
 
+    static async launchShows(showList)
+    {
+        for(let show in showList)
+        {
+            console.log(show);
+        }
+    }
+
+    static async addShow(req, res)
+    {
+        let user = req.session.user;
+        let qry = {
+            name:req.body.showName,
+            owner:user,
+            streams:req.body.streams,
+            shortid:shortid.generate()
+        }
+
+        if(!user)
+        {
+            res.redirect('/users/login');
+        }
+        else
+        {
+            let show = await Show.findOneAndUpdate({name:qry.name,owner:qry.owner},qry,{upsert: true}).populate('streams').exec();
+            res.redirect(`/shows/${qry.shortid}`);
+        }
+    }
+
+    static async showShowPage(req, res)
+    {
+        let user = req.session.user;
+        if(!user)
+        {
+            res.redirect('/users/login');
+        }
+        else
+        {
+            let show = await Show.findOne({shortid: req.params.showId, owner:user}).populate('streams').populate('primaryStream').exec();
+            res.render('showPage', {title: 'Show overview page', show: show, scripts:['/js/showManagement.js']});
+        }
+    }
+
+    static async setShowPrimaryStream(req, res)
+    {
+        let user = req.session.user;
+        if(!user)
+        {
+            res.json({error:'No user logged in'});
+        }
+        else
+        {
+            let show = await Show.findOneAndUpdate({_id:req.body.showId, owner:user},{primaryStream:req.body.idPrimaryStream},{upsert: true}).exec();
+            res.json({'updated':true});
+        }
+    }
+
+    static async showShowPlayer(req, res)
+    {
+        let show = await Show.findOne({shortid:req.params.showId}).populate('streams');
+        res.render('showPlayer', {title:show.name, show:show});
+    }
 }
 
 module.exports = ShowController;

@@ -1,4 +1,5 @@
 const Controller = require('./Controller');
+const ShowController = require('./ShowController');
 const shortid = require("shortid");
 const Stream = require('../Models/StreamModel');
 const User = require('../Models/UserModel');
@@ -16,9 +17,10 @@ class StreamController extends Controller
     {
         let user = await User.findOne({username:req.body.user}).exec();
         let qry = {owner:user, name:req.body.name, shortid:req.body.shortid};
-        let stream = await Stream.findOne(qry).exec();
+        let stream = await Stream.findOne(qry).populate('shows').exec();
         if(stream)
         {
+            await ShowController.launchShows(stream.shows);
             stream.streaming = true;
             stream.save();
             res.status(200);
