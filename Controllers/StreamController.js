@@ -15,9 +15,9 @@ class StreamController extends Controller
     {
         console.log(req.body);
         let qry = {'owner.username':req.body.user, name:req.body.name, shortid:req.body.shortid};
-        let allUserStreams = Stream.find({'owner.username':req.body.user});
+        let allUserStreams = await Stream.find({'owner.username':req.body.user});
         console.log(allUserStreams);
-        let allNamedStreams = Stream.find({'name':req.body.name, shortid:req.body.shortid});
+        let allNamedStreams = await Stream.find({'name':req.body.name, shortid:req.body.shortid});
         console.log(qry);
         let stream = await Stream.findOne(qry).exec();
         console.log(stream);
