@@ -32,4 +32,11 @@ router.delete('/', function(req, res, next){
     });
 });
 
+router.get('/test/:streamId', function(req, res, next){
+    Controller.testStreamToShowRelationship(req, res).catch(function (e){
+        console.log(e);
+        next();
+    });
+});
+
 module.exports = router;

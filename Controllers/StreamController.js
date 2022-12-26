@@ -8,6 +8,13 @@ const Show = require('../Models/ShowModel');
 class StreamController extends Controller
 {
 
+    static async testStreamToShowRelationship(req, res)
+    {
+        let qry = {shortid:req.params.streamId};
+        let stream = await Stream.findOne(qry).exec();
+        res.send(stream);
+    }
+
     /**
      * @param   {Request}       req   The Express Request
      * @param   {Response}      res   The Express Response
@@ -19,11 +26,11 @@ class StreamController extends Controller
         let user = await User.findOne({username:req.body.user}).exec();
         let qry = {owner:user, name:req.body.name, shortid:req.body.shortid};
         let stream = await Stream.findOne(qry).exec();
-        let shows = await Show.find({"streams._id":stream._id});
-        console.log(shows);
         if(stream)
         {
-            await ShowController.launchShows(shows);
+            ShowController.launchShows(showList).then(function(){
+                console.log('Updated shows');
+            });
             stream.streaming = true;
             stream.save();
             res.status(200);

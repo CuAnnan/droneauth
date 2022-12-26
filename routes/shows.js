@@ -37,4 +37,6 @@ router.get('/:user/:showId', function(req, res, next){
     });
 });
 
+
+
 module.exports = router;

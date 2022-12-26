@@ -1,6 +1,8 @@
 const Controller = require('./Controller');
 const shortid = require('shortid');
 const Show = require('../Models/ShowModel');
+const Stream = require('../Models/StreamModel');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 class ShowController extends Controller
 {
@@ -44,6 +46,12 @@ class ShowController extends Controller
         else
         {
             let show = await Show.findOneAndUpdate({name:qry.name,owner:qry.owner},qry,{upsert: true}).populate('streams').exec();
+            for(let idStreams of qry.streams)
+            {
+                let stream = await Stream.findOne({_id:idStreams});
+                stream.shows.push(show);
+                stream.save();
+            }
             res.redirect(`/shows/${qry.shortid}`);
         }
     }
