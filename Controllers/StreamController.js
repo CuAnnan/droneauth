@@ -1,6 +1,7 @@
 const Controller = require('./Controller');
 const shortid = require("shortid");
 const Stream = require('../Models/StreamModel');
+const User = require('../Models/UserModel');
 
 class StreamController extends Controller
 {
@@ -13,12 +14,8 @@ class StreamController extends Controller
      */
     static async verifyStream(req, res)
     {
-        console.log(req.body);
-        let qry = {'owner.username':req.body.user, name:req.body.name, shortid:req.body.shortid};
-        let allUserStreams = await Stream.find({'owner.username':req.body.user});
-        console.log(allUserStreams);
-        let allNamedStreams = await Stream.find({'name':req.body.name, shortid:req.body.shortid});
-        console.log(allNamedStreams);
+        let user = await User.findOne({username:req.body.user}).exec();
+        let qry = {owner:user, name:req.body.name, shortid:req.body.shortid};
         let stream = await Stream.findOne(qry).exec();
         console.log(stream);
         if(stream)
