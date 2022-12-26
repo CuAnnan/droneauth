@@ -14,7 +14,9 @@ class StreamController extends Controller
     static async verifyStream(req, res)
     {
         let qry = {'owner.displayname':req.body.user, name:req.body.name, shortid:req.body.shortid};
+        console.log(qry);
         let stream = await Stream.findOne(qry).exec();
+        console.log(stream);
         if(stream)
         {
             stream.streaming = true;
