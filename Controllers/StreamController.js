@@ -17,7 +17,6 @@ class StreamController extends Controller
         let user = await User.findOne({username:req.body.user}).exec();
         let qry = {owner:user, name:req.body.name, shortid:req.body.shortid};
         let stream = await Stream.findOne(qry).exec();
-        console.log(stream);
         if(stream)
         {
             stream.streaming = true;
