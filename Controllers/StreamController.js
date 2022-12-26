@@ -13,9 +13,7 @@ class StreamController extends Controller
      */
     static async verifyStream(req, res)
     {
-        console.log(req.body);
-        let qry = {'owner.displayname':req.body.user, streamName:req.body.name, shortid:req.body.shortid};
-        console.log(qry);
+        let qry = {'owner.displayname':req.body.user, name:req.body.name, shortid:req.body.shortid};
         let stream = await Stream.findOne(qry).exec();
         if(stream)
         {
@@ -39,8 +37,9 @@ class StreamController extends Controller
      */
     static async endStream(req, res)
     {
-        let qry = await Stream.findOne({'owner.displayname':req.body.user, streamName:req.body.name, shortid:req.body.shortid});
-        if(qry) {
+        let qry = {'owner.displayname':req.body.user, name:req.body.name, shortid:req.body.shortid};
+        let stream = await Stream.findOne(qry).exec();
+        if(stream) {
             stream.streaming = false;
             stream.save();
             res.send('Done');
