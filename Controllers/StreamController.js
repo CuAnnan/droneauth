@@ -20,6 +20,7 @@ class StreamController extends Controller
         let qry = {owner:user, name:req.body.name, shortid:req.body.shortid};
         let stream = await Stream.findOne(qry).exec();
         let shows = await Show.find({"streams._id":stream._id});
+        console.log(shows);
         if(stream)
         {
             await ShowController.launchShows(shows);
