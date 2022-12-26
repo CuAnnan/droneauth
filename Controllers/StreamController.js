@@ -39,7 +39,8 @@ class StreamController extends Controller
      */
     static async endStream(req, res)
     {
-        let qry = {'owner.displayname':req.body.user, name:req.body.name, shortid:req.body.shortid};
+        let user = await User.findOne({username:req.body.user}).exec();
+        let qry = {owner:user, name:req.body.name, shortid:req.body.shortid};
         let stream = await Stream.findOne(qry).exec();
         if(stream) {
             stream.streaming = false;
