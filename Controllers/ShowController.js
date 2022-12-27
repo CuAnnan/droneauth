@@ -25,7 +25,7 @@ class ShowController extends Controller
         for(let show in showList)
         {
             show.live = true;
-            for(let stream in show.streams)
+            for(let stream of show.streams)
             {
                 if(!stream.streaming)
                 {
