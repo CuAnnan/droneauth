@@ -22,6 +22,7 @@ class ShowController extends Controller
 
     static async launchShows(showList)
     {
+        console.log(showList);
         for(let show in showList)
         {
             show.live = true;
