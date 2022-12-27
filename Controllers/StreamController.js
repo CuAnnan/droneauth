@@ -28,8 +28,8 @@ class StreamController extends Controller
         let stream = await Stream.findOne(qry).exec();
         if(stream)
         {
-            ShowController.launchShows(showList).then(function(){
-                console.log('Updated shows');
+            ShowController.launchShows(stream.shows).catch(function(e){
+                console.log(e);
             });
             stream.streaming = true;
             stream.save();

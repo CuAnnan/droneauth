@@ -7,6 +7,8 @@ let ShowSchema = new mongoose.Schema({
     streams:[{type: mongoose.Schema.Types.ObjectId, ref:'Stream'}],
     owner:{type: mongoose.Schema.Types.ObjectId, ref:'User'},
     primaryStream:{type: mongoose.Schema.Types.ObjectId, ref:'Stream'},
+    live:{type:Boolean, default: false},
+    description:{type: String}
 });
 
 module.exports = mongoose.model('Show', ShowSchema);

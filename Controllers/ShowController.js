@@ -22,10 +22,17 @@ class ShowController extends Controller
 
     static async launchShows(showList)
     {
-        console.log(showList);
         for(let show in showList)
         {
-            console.log(show);
+            show.live = true;
+            for(let stream in show.streams)
+            {
+                if(!stream.streaming)
+                {
+                    show.live = false;
+                }
+            }
+            show.save();
         }
     }
 
@@ -56,7 +63,7 @@ class ShowController extends Controller
         }
     }
 
-    static async showShowPage(req, res)
+    static async displayShowPage(req, res)
     {
         let user = req.session.user;
         if(!user)
@@ -84,7 +91,7 @@ class ShowController extends Controller
         }
     }
 
-    static async showShowPlayer(req, res)
+    static async displayShowPlayer(req, res)
     {
         let show = await Show.findOne({shortid:req.params.showId}).populate('streams');
         res.render('showPlayer', {title:show.name, show:show});

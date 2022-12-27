@@ -17,7 +17,7 @@ router.post('/', function(req, res, next){
 });
 
 router.get('/:showId',function(req, res, next){
-    Controller.showShowPage(req, res).catch(function(e){
+    Controller.displayShowPage(req, res).catch(function(e){
         console.log(e);
         next();
     });
@@ -30,8 +30,8 @@ router.post('/primaryStream', function(req, res, next){
     });
 });
 
-router.get('/:user/:showId', function(req, res, next){
-    Controller.showShowPlayer(req, res).catch(function(e){
+router.get('/:user/:showName/:showId', function(req, res, next){
+    Controller.displayShowPlayer(req, res).catch(function(e){
         console.log(e);
         next();
     });
