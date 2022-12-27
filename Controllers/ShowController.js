@@ -24,7 +24,6 @@ class ShowController extends Controller
     {
         for(let show of showList)
         {
-            console.log(show);
             show.live = true;
             for(let stream of show.streams)
             {
@@ -34,6 +33,7 @@ class ShowController extends Controller
                 }
             }
             show.save();
+            console.log(show);
         }
     }
 
