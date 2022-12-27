@@ -25,8 +25,9 @@ class ShowController extends Controller
         for(let show of showList)
         {
             show.live = true;
-            for(let stream of show.streams)
+            for(let streamObjId of show.streams)
             {
+                let stream = Stream.findOne({_id:streamObjId});
                 console.log(stream);
                 if(!stream.streaming)
                 {
