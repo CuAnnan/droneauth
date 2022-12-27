@@ -27,13 +27,13 @@ class ShowController extends Controller
             show.live = true;
             for(let stream of show.streams)
             {
+                console.log(stream);
                 if(!stream.streaming)
                 {
                     show.live = false;
                 }
             }
             show.save();
-            console.log(show);
         }
     }
 
@@ -53,8 +53,9 @@ class ShowController extends Controller
         }
         else
         {
-            let show = await Show.findOneAndUpdate({name:qry.name,owner:qry.owner},qry,{upsert: true}).populate('streams').exec();
-            for(let idStreams of qry.streams)
+            await Show.findOneAndUpdate({name:qry.name,owner:qry.owner},qry,{upsert: true}).exec();
+            let show = await Show.findOne({name:qry.name,owner:qry.owner}).populate('streams').exec();
+            for(let idStreams of show.streams)
             {
                 let stream = await Stream.findOne({_id:idStreams});
                 stream.shows.push(show);
